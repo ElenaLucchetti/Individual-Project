@@ -40,6 +40,10 @@ def durations_feature(feature, con_data, dep_data):
     con_f_durations = get_duration_list(con_data_f)
     dep_f_durations = get_duration_list(dep_data_f)
 
+    print('Control {0} duration mean: {1}\nDiagnosed {0} duration mean: {2}'.format(
+        feature, np.mean(con_f_durations), np.mean(dep_f_durations))
+    )
+
     # null hypothesis: Diagnosed patients and control patients use feature with similar durations
     duration_t = stats.ttest_ind(con_f_durations, dep_f_durations)
 
