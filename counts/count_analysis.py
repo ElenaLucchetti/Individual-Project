@@ -5,6 +5,7 @@ import csv
 
 path = '/home/elena/Downloads/Uni/Year 4/IndividualProject/Elena-transcriptions/Elena-transcriptions'
 
+
 def import_data():
     control_data = []
     depressed_data = []
@@ -14,18 +15,20 @@ def import_data():
 
     for filename in os.listdir(path):
         full_file_path = '{0}/{1}'.format(path, filename)
-        reader = csv.reader(open(full_file_path, "rt", encoding="ISO-8859-1"), delimiter=",")
+        with open(full_file_path, "rt", encoding="ISO-8859-1") as f:
+            reader = csv.reader(f, delimiter=",")
 
-        if filename[0] == 'C':  # control participants
-            part_data = np.array(list(reader))
-            control_data += [part_data]  # keep data separate by participant
-            control_duration += float(part_data[-1][-1])
-        elif filename[0] == 'P':  # diagnosed participants
-            part_data = np.array(list(reader))
-            depressed_data += [part_data]  # keep data separate by participant
-            depressed_duration += float(part_data[-1][-1])
+            if filename[0] == 'C':  # control participants
+                part_data = np.array(list(reader))
+                control_data += [part_data]  # keep data separate by participant
+                control_duration += float(part_data[-1][-1])    # the final max time is the total duration
+            elif filename[0] == 'P':  # diagnosed participants
+                part_data = np.array(list(reader))
+                depressed_data += [part_data]  # keep data separate by participant
+                depressed_duration += float(part_data[-1][-1])
 
     return control_data, depressed_data, control_duration, depressed_duration
+
 
 def count_feature(feature, con_data, dep_data, con_duration, dep_duration):
     con_data = np.concatenate(con_data)  # use concatenate instead of array to put all data together
@@ -52,9 +55,11 @@ def count_feature(feature, con_data, dep_data, con_duration, dep_duration):
         con_exp_f, dep_exp_f)
     )
 
-    # null hypothesis: Diagnosed patients and control patients use fillers with the same frequency
-    count_chisquare = stats.chisquare(observed_f_count, f_exp=expected_f_count)
-    #count_t = stats.ttest_ind(observed_fil_count, expected_fil_count)
+    return observed_f_count, expected_f_count
+
+def return_chisquare(observed, expected):
+    # null hypothesis: Diagnosed patients and control patients use feature with the same frequency
+    count_chisquare = stats.chisquare(observed, f_exp=expected)
 
     return count_chisquare
   
