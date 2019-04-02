@@ -4,7 +4,7 @@ from counts.count_analysis import import_data
 from counts.count_analysis import count_feature
 
 
-class TestDataAnalysis(unittest.TestCase):
+class TestCountDataAnalysis(unittest.TestCase):
 
     def test_import_control_data(self):
         control_data = np.array([
@@ -95,6 +95,5 @@ class TestDataAnalysis(unittest.TestCase):
         observed_f_count, expected_f_count = count_feature(feature, control_data, depressed_data, 6.633, 9.187)
 
         np.testing.assert_almost_equal(real_expected_f_count, expected_f_count, 2)
-        assert True
 
 
