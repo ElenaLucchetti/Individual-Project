@@ -1,5 +1,6 @@
 from counts.count_analysis import import_data
 from counts.count_analysis import count_feature
+from counts.count_analysis import return_chisquare
 import operator
 
 ALPHA = 0.05
@@ -19,7 +20,8 @@ pvalues = {}
 control_data, depressed_data, control_duration, depressed_duration = import_data()
 
 for feature in features:
-    pvalue = count_feature(feature, control_data, depressed_data, control_duration, depressed_duration)[1]
+    obs, exp = count_feature(feature, control_data, depressed_data, control_duration, depressed_duration)
+    pvalue = return_chisquare(obs, exp)[1]
     pvalues[feature] = pvalue
 
 pvalues = {feature: pvalues[feature] for feature in pvalues.keys() if pvalues[feature] < 0.05}
