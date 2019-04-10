@@ -9,3 +9,11 @@ Each of these directories contains:
 * A file containing the description of each defined function
 
 The directory "tests" contains all the unit test written for the analysis.
+
+
+
+**NOTE** run the command
+
+`$ pip install -r requirements.txt`
+
+to install requirements
